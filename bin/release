@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cat << EOF
+addons: []
+default_process_types:
+  web: ./redis-5.0.7/src/redis-server
+EOF

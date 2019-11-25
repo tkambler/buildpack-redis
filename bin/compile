@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+set -o nounset
+
+CURRENT_DIR=$(pwd)
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=${3:-}
+BUILDPACK_DIR=`dirname $(readlink -f ${BASH_SOURCE%/*})`
+
+df -h
+ls -al
+
+echo "ENV_DIR: $ENV_DIR"
+sleep 5
+
+## ?
+BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+echo "BP_DIR: $BP_DIR"
+sleep 5
+
+source $BP_DIR/lib/environment.sh
+echo "environment.sh loaded"
+sleep 5
+
+echo "CURRENT_DIR: $CURRENT_DIR"
+ls -al
+
+sleep 5
+
+cd $BUILD_DIR
+echo "BUILD_DIR: $BUILD_DIR"
+ls -al
+
+sleep 5
+
+cd $CACHE_DIR
+echo "CACHE_DIR: $CACHE_DIR"
+ls -al
+
+sleep 5
+
+cd $BUILDPACK_DIR
+echo "BUILDPACK_DIR: $BUILDPACK_DIR"
+ls -al
+
+sleep 5
+
+cd $BUILD_DIR
+mv $BUILDPACK_DIR/redis-5.0.7.tar.gz .
+
+sleep 5
+
+mkdir ./node
+tar -xzf redis-5.0.7.tar.gz
+cd redis-5.0.7
+make
+cd ../
+
+sleep 5
+
+echo "Redis was extracted"
+
+ls -al
+sleep 5
+
